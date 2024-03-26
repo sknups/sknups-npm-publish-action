@@ -1,11 +1,31 @@
 ---
-name: 'Hello World'
-description: 'Prints "Hello World" to the console.'
+name: 'SKNUPS npm publish action'
+description: 'Used by the SKNUPS organisation to publish npm packages'
 
 runs:
   using: 'composite'
   steps:
 
-    - name: 'Print "Hello World"'
+    - name: Parse package.json
+      id: 'parse'
       shell: bash
-      run: echo "Hello World"
+      run: ${{github.action_path}}/scripts/parse-package-json.sh
+
+    - name: Select service account
+      if: steps.parse.outputs.action == 'publish'
+      id: 'select'
+      shell: bash
+      run: ${{github.action_path}}/scripts/select-service-account.sh
+      env:
+        SCOPE: ${{ steps.parse.outputs.scope }}
+
+    - name: Authenticate Google Artifact Registry
+      if: steps.parse.outputs.action == 'publish'
+      uses: sknups/authenticate-google-artifact-registry-action@v1
+      with:
+        workload_identity_provider: ${{ steps.select.outputs.workload_identity_provider }}
+        service_account: ${{ steps.select.outputs.service_account }}
+
+    - name: Publish npm package
+      if: steps.parse.outputs.action == 'publish'
+      uses: sknups/npm-publish-action@v1
