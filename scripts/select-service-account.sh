@@ -7,11 +7,11 @@ NPM_PUBLIC_WRITER="npm-public-writer-gh@sknups.iam.gserviceaccount.com"
 if [[ "$SCOPE" == "@sknups-internal" ]]; then
   echo "workload_identity_provider=$WORKLOAD_IDENTITY_PROVIDER" >> "$GITHUB_OUTPUT"
   echo "service_account=$NPM_INTERNAL_WRITER" >> "$GITHUB_OUTPUT"
-  echo "service account is $NPM_INTERNAL_WRITER" >> /dev/stdout
+  echo "service account is $NPM_INTERNAL_WRITER"
 fi
 
 if [[ "$SCOPE" == "@sknups" ]]; then
   echo "workload_identity_provider=$WORKLOAD_IDENTITY_PROVIDER" >> "$GITHUB_OUTPUT"
   echo "service_account=$NPM_PUBLIC_WRITER" >> "$GITHUB_OUTPUT"
-  echo "service account is $NPM_PUBLIC_WRITER" >> /dev/stdout
+  echo "service account is $NPM_PUBLIC_WRITER"
 fi

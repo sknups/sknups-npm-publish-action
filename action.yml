@@ -9,13 +9,13 @@ runs:
     - name: Parse package.json
       id: 'parse'
       shell: bash
-      run: ${{github.action_path}}/scripts/parse-package-json.sh
+      run: $GITHUB_ACTION_PATH/scripts/parse-package-json.sh
 
     - name: Select service account
       if: steps.parse.outputs.action == 'publish'
       id: 'select'
       shell: bash
-      run: ${{github.action_path}}/scripts/select-service-account.sh
+      run: $GITHUB_ACTION_PATH/scripts/select-service-account.sh
       env:
         SCOPE: ${{ steps.parse.outputs.scope }}
 
